@@ -77,3 +77,10 @@ Deploy as web app
 Improve model accuracy
 
 Add more sensors
+
+
+## 🛠 Hardware Setup
+![Setup](assets/setup.jpg)
+
+## 📊 Output
+![Output](assets/output.png)

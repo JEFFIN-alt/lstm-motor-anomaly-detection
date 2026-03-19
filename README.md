@@ -76,7 +76,7 @@ Deploy as web app
 
 Improve model accuracy
 
-Add more sensors
+Add more sensors..
 
 
 ## 🛠 Hardware Setup

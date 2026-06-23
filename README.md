@@ -1,86 +1,329 @@
-***LSTM-Based Motor Anomaly Detection System**
-*** Overview
+````markdown
+# ⚙️ LSTM-Based Encoder–Decoder for Multi-Sensor Anomaly Detection
 
-This project implements a real-time motor anomaly detection system using:
+> Real-time AI-powered motor health monitoring using **LSTM Neural Networks**, **Arduino**, **MPU6050**, and **Python Dashboard**.
 
-LSTM (Long Short-Term Memory)
+![Python](https://img.shields.io/badge/Python-3.10-blue?logo=python)
+![TensorFlow](https://img.shields.io/badge/TensorFlow-LSTM-orange?logo=tensorflow)
+![Arduino](https://img.shields.io/badge/Arduino-Hardware-00979D?logo=arduino)
+![License](https://img.shields.io/badge/License-MIT-green)
 
-Arduino-based sensor data collection
+---
 
-Python-based monitoring dashboard
+## 📌 Overview
 
-The system detects abnormal behavior in motors using time-series data.
+This project is an **Intelligent Motor Anomaly Detection System** that continuously monitors motor health using sensor data collected from an Arduino.
 
-⚙️ Hardware Setup
+Sensor readings are analyzed using a trained **LSTM Autoencoder**, which learns normal operating patterns and detects abnormal behavior in real time.
 
-Arduino board
+When an anomaly is detected:
 
-Breadboard
+- 🚨 Dashboard updates instantly
+- 🔴 Arduino LED turns RED
+- ⚠ Critical conditions trigger blinking alerts
+- 📈 Live graphs visualize sensor values and anomaly scores
 
-3 Sensors (e.g., vibration, temperature, current)
+---
 
-Jumper wires
+## ✨ Features
 
- Software Stack
+- 🤖 LSTM Autoencoder based anomaly detection
+- ⚡ Real-time sensor streaming via Serial Communication
+- 📊 Live monitoring dashboard
+- 📈 Reconstruction error visualization
+- 🔴 Automatic LED alerts using Arduino
+- 🌡 Temperature monitoring
+- 📡 MPU6050 Accelerometer & Gyroscope integration
+- 🎯 Threshold-based anomaly detection
+- 💾 Dataset collection utility
+- 🌐 Flask Web Dashboard
 
-Python
+---
 
-TensorFlow / Keras
+## 🛠 Hardware Used
 
-NumPy, Pandas
+- Arduino Uno/Nano
+- MPU6050 Accelerometer & Gyroscope
+- Flame Sensor (Digital)
+- LEDs (Red & Green)
+- Breadboard
+- Jumper Wires
+- USB Cable
 
-Serial Communication (Arduino → Python)
+---
 
- Workflow
+## 💻 Software Stack
 
-Sensor data collected using Arduino
+- Python
+- TensorFlow / Keras
+- NumPy
+- Pandas
+- Scikit-learn
+- Joblib
+- Flask
+- Streamlit
+- PySerial
+- Plotly
 
-Data streamed to Python via serial port
+---
 
-Data preprocessed and scaled
+## ⚙️ System Architecture
 
-LSTM model predicts normal behavior
+```text
+               +--------------------+
+               |     Arduino        |
+               | MPU6050 + Sensors  |
+               +---------+----------+
+                         |
+                  Serial Communication
+                         |
+                         ▼
+               +--------------------+
+               |   Python Backend   |
+               | Data Preprocessing |
+               +---------+----------+
+                         |
+                  StandardScaler
+                         |
+                         ▼
+             +----------------------+
+             |  LSTM Autoencoder    |
+             +----------+-----------+
+                        |
+        Reconstruction Error Calculation
+                        |
+               Threshold Comparison
+                        |
+        +---------------+----------------+
+        |                                |
+     NORMAL                        ANOMALY
+        |                                |
+ Green LED ON                  Red LED ON
+        |                                |
+        +----------Dashboard-------------+
+```
 
-Anomalies detected using thresholding
+---
 
-Real-time monitoring via dashboard
+# 📂 Project Structure
 
- Project Structure
-.
-├── app.py
-├── motor_monitor.py
-├── real_time_detector.py
-├── collect_dataset.py
-├── compute_threshold.py
-├── ui_detector.py
-├── arduino_stream_test.py
-├── motor_anomaly_lstm.keras
-├── scaler.save
-├── requirements.txt
-▶ How to Run
-pip install -r requirements.txt
+```text
+jeffin-alt-lstm-motor-anomaly-detection/
+│
+├── app.py                      # Flask web application
+├── dashboard.py                # Streamlit monitoring dashboard
+├── motor_monitor.py            # Main monitoring script
+├── real_time_detector.py       # Real-time anomaly detection
+├── ui_detector.py              # UI detector
+├── collect_dataset.py          # Dataset collection
+├── compute_threshold.py        # Threshold calculation
+├── arduino_stream_test.py      # Serial communication testing
+├── arduino_led_control.ino     # Arduino firmware
+├── motor_normal_data.csv       # Sample dataset
+├── scaler.save                 # Saved scaler
+├── templates/
+│   └── index.html              # Flask frontend
+│
+└── assets/
+```
+
+---
+
+# 🚀 Installation
+
+Clone the repository
+
+```bash
+git clone https://github.com/yourusername/jeffin-alt-lstm-motor-anomaly-detection.git
+
+cd jeffin-alt-lstm-motor-anomaly-detection
+```
+
+Install dependencies
+
+```bash
+pip install -r requirement.txt
+```
+
+---
+
+# ▶ Running the Project
+
+### 1. Upload Arduino Code
+
+Upload
+
+```text
+arduino_led_control.ino
+```
+
+to your Arduino board.
+
+---
+
+### 2. Collect Dataset (Optional)
+
+```bash
+python collect_dataset.py
+```
+
+---
+
+### 3. Compute Threshold
+
+```bash
+python compute_threshold.py
+```
+
+---
+
+### 4. Start Real-Time Monitoring
+
+```bash
 python motor_monitor.py
-==== Features==================
+```
 
-Real-time anomaly detection
+or
 
-Hardware + AI integration
+```bash
+python real_time_detector.py
+```
 
-LSTM-based time series prediction
+---
 
-Dashboard visualization
+### 5. Launch Dashboard
 
-****Future Improvements****
+Flask Dashboard
 
-Deploy as web app
+```bash
+python app.py
+```
 
-Improve model accuracy
+Open
 
-Add more sensors..
+```
+http://localhost:5000
+```
 
+or
 
-## 🛠 Hardware Setup
-![Setup](assets/setup.jpg)
+Streamlit Dashboard
 
-## 📊 Output
-![Output](assets/output.png)
+```bash
+streamlit run dashboard.py
+```
+
+---
+
+# 📊 Detection Workflow
+
+1. Arduino collects sensor values.
+2. Sensor data is streamed to Python.
+3. Data is normalized using the saved scaler.
+4. LSTM predicts reconstructed sensor sequence.
+5. Reconstruction error is calculated.
+6. Error is compared with threshold.
+7. Dashboard updates in real time.
+8. Arduino LEDs indicate motor health.
+
+---
+
+# 📈 Model
+
+Model Type:
+
+- LSTM Autoencoder
+
+Input Features:
+
+- Accelerometer X
+- Accelerometer Y
+- Accelerometer Z
+- Gyroscope X
+- Gyroscope Y
+- Gyroscope Z
+- Temperature
+- Flame Sensor
+
+Sequence Length
+
+```
+30 Timesteps
+```
+
+Detection Metric
+
+```
+Mean Squared Reconstruction Error
+```
+
+---
+
+# 📸 Screenshots
+
+## Hardware Setup
+
+```
+assets/setup.jpg
+```
+
+## Dashboard
+
+```
+assets/output.png
+```
+
+---
+
+# 🔮 Future Improvements
+
+- IoT Cloud Integration
+- Email & SMS Alerts
+- Mobile Application
+- MQTT Support
+- Edge AI Deployment
+- Predictive Maintenance Analytics
+- Multiple Motor Support
+- Model Optimization
+
+---
+
+# 🤝 Contributing
+
+Contributions are welcome!
+
+1. Fork the repository
+2. Create a new branch
+
+```bash
+git checkout -b feature-name
+```
+
+3. Commit your changes
+
+```bash
+git commit -m "Added new feature"
+```
+
+4. Push to GitHub
+
+```bash
+git push origin feature-name
+```
+
+5. Open a Pull Request
+
+---
+
+# 📄 License
+
+This project is licensed under the **MIT License**.
+
+---
+
+# 👨‍💻 Author
+
+**Thejus P K**
+
+If you found this project helpful, consider giving it a ⭐ on GitHub!
+````
